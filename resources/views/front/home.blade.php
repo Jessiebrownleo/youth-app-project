@@ -1,0 +1,456 @@
+@extends('front.layouts.app')
+
+@section('main_content')
+
+    {{-- <div class="slider">
+        <div class="slide-carousel owl-carousel">
+
+            @foreach ($slider as $slide)
+                <div class="item" style="background-image:url('{{ asset('uploads/' . $slide->photo) }}');">
+                    <div class="bg"></div>
+                    <div class="text">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="text-wrapper">
+                                        <div class="text-content">
+                                            <h2>{{ $slide->heading }}</h2>
+                                            <p>
+                                                {!! $slide->text !!}
+                                            </p>
+                                            <div class="button-style-1 mt_20">
+                                                <a href="{{ $slide->button_link }}">{{ $slide->button_text }} <i
+                                                        class="fas fa-long-arrow-alt-right"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+
+        </div>
+    </div> --}}
+    <!-- Carousel Start -->
+    <div class="carousel-header">
+        <div id="carouselId" class="carousel slide" data-bs-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-bs-target="#carouselId" data-bs-slide-to="0" class="active"></li>
+                <li data-bs-target="#carouselId" data-bs-slide-to="1"></li>
+            </ol>
+            <div class="carousel-inner" role="listbox">
+                @foreach ($slider as $slide)
+                    <div class="carousel-item active">
+                        <img src="{{ asset('uploads/' . $slide->photo) }}" class="img-fluid" alt="Image">
+                        <div class="carousel-caption">
+                            <div class="text-center p-4" style="max-width: 900px;">
+                                {{-- <h5 class="text-white text-uppercase fw-bold mb-3 mb-md-4 wow fadeInUp" data-wow-delay="0.1s">
+                                Solution For All Type Of Visas</h5> --}}
+                                <h1 class="text-capitalize text-white mb-3 mb-md-4 wow fadeInUp"
+                                    data-wow-delay="0.3s">{{ $slide->heading }}</h1>
+                                <p class="text-white mb-4 mb-md-5 fs-5 wow fadeInUp" data-wow-delay="0.5s">
+                                    {!! $slide->text !!}
+                                </p>
+                                <a class="btn btn-primary border-secondary rounded-pill text-white py-3 px-5 wow fadeInUp"
+                                    data-wow-delay="0.7s" href="{{ $slide->button_link }}">{{ $slide->button_text }}</a>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon bg-secondary wow fadeInLeft" data-wow-delay="0.2s"
+                    aria-hidden="false"></span>
+                <span class="visually-hidden-focusable">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselId" data-bs-slide="next">
+                <span class="carousel-control-next-icon bg-secondary wow fadeInRight" data-wow-delay="0.2s"
+                    aria-hidden="false"></span>
+                <span class="visually-hidden-focusable">Next</span>
+            </button>
+        </div>
+    </div>
+    <!-- Carousel End -->
+
+
+    @if ($special->status == 'Show')
+        <div class="special pt_70 pb_70">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="full-section">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="left-side">
+                                        <div class="inner">
+                                            <h2>{{ $special->sub_heading }}</h2>
+                                            <h3>{{ $special->heading }}</h3>
+                                            {!! $special->text !!}
+                                            <div class="button-style-1 mt_20">
+                                                <a href="{{ $special->button_link }}">{{ $special->button_text }} <i
+                                                        class="fas fa-long-arrow-alt-right"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="right-side"
+                                        style="background-image: url('{{ asset('uploads/' . $special->photo) }}');">
+                                        <a class="video-button"
+                                            href="https://www.youtube.com/watch?v={{ $special->video_id }}"><span></span></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
+
+    @if ($home_page_item->cause_status == 'Show')
+        <div class="cause pt_70">
+            <div class="container">
+
+                @if ($home_page_item->cause_heading != '' || $home_page_item->cause_subheading != '')
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="heading">
+                                <h2>{{ $home_page_item->cause_heading }}</h2>
+                                <p>
+                                    {{ $home_page_item->cause_subheading }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+                <div class="row">
+                    @foreach ($featured_causes as $item)
+                        <div class="col-lg-4 col-md-6">
+                            <div class="item pb_70" data-aos="zoom-in-up">
+                                <div class="photo">
+                                    <img src="{{ asset('uploads/' . $item->featured_photo) }}" alt="">
+                                </div>
+                                <div class="text">
+                                    <h2>
+                                        <a href="{{ route('cause', $item->slug) }}">{{ $item->name }}</a>
+                                    </h2>
+                                    <!-- Icons for likes, views, and bookmark -->
+                                    <div class="icons mb_10 d-flex justify-content-between">
+                                        <div class="text-start">
+                                            @auth
+                                                <!-- Heart Icon Toggle (only shown if authenticated) -->
+                                                <span class="like-btn" data-id="{{ $item->id }}">
+                                                    <i class="{{ $item->liked_by_user ? 'fas' : 'far' }} fa-heart"></i>
+                                                    <span class="like-count">{{ $item->likes }}</span> Likes
+                                                </span>
+                                            @endauth
+
+                                            <!-- View Icon (always visible) -->
+                                            <span style="margin-left: {{ Auth::check() ? '15px' : '0' }};">
+                                                <i class="fas fa-eye"></i> {{ $item->views }} Views
+                                            </span>
+                                        </div>
+
+                                        @auth
+                                            <!-- Bookmark Icon aligned to the right (only shown if authenticated) -->
+                                            <div class="text-end">
+                                                <span class="bookmark-btn" data-id="{{ $item->id }}">
+                                                    <i class="{{ $item->bookmarked_by_user ? 'fas' : 'far' }} fa-bookmark"></i>
+                                                </span>
+                                            </div>
+                                        @endauth
+                                    </div>
+
+
+                                    <div class="short-des">
+                                        <p>{!! nl2br($item->short_description) !!}</p>
+                                    </div>
+                                    @php
+                                        $perc = ($item->raised / $item->goal) * 100;
+                                        $perc = ceil($perc);
+                                    @endphp
+                                    <div class="progress mb_10">
+                                        <div class="progress-bar w-0" role="progressbar" aria-label="Example with label"
+                                            aria-valuenow="{{ $perc }}" aria-valuemin="0" aria-valuemax="100"
+                                            style="animation: progressAnimation{{ $loop->iteration }} 2s linear forwards;">
+                                        </div>
+                                        <style>
+                                            @keyframes progressAnimation{{ $loop->iteration }} {
+                                                from {
+                                                    width: 0;
+                                                }
+
+                                                to {
+                                                    width: {{ $perc }}%;
+                                                }
+                                            }
+                                        </style>
+                                    </div>
+                                    <div class="lbl mb_20">
+                                        <div class="goal">Goal: ${{ $item->goal }}</div>
+                                        <div class="raised">Raised: ${{ $item->raised }}</div>
+                                    </div>
+                                    <div class="button-style-2">
+                                        <a href="{{ route('cause', $item->slug) }}">View Detail <i
+                                                class="fas fa-long-arrow-alt-right"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+            </div>
+        </div>
+    @endif
+
+
+    @if ($home_page_item->feature_status == 'Show')
+        <div class="why-choose pt_70"
+            style="background-image: url({{ asset('uploads/' . $home_page_item->feature_background) }})">
+            <div class="container">
+                <div class="row">
+                    @foreach ($features as $feature)
+                        <div class="col-md-4">
+                            <div class="inner pb_70">
+                                <div class="icon">
+                                    <i class="{{ $feature->icon }}"></i>
+                                </div>
+                                <div class="text">
+                                    <h2>{{ $feature->heading }}</h2>
+                                    <p>
+                                        {!! $feature->text !!}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    @endif
+
+
+    @if ($home_page_item->event_status == 'Show')
+        <div class="event pt_70">
+            <div class="container">
+
+                @if ($home_page_item->event_heading != '' || $home_page_item->event_subheading != '')
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="heading">
+                                <h2>{{ $home_page_item->event_heading }}</h2>
+                                <p>
+                                    {{ $home_page_item->event_subheading }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+                <div class="row">
+                    @foreach ($events as $item)
+                        @php
+                            $current_timestamp = strtotime(date('Y-m-d H:i'));
+                            $event_timestamp = strtotime($item->date . ' ' . $item->time);
+                        @endphp
+
+                        @if ($event_timestamp < $current_timestamp)
+                            @continue
+                        @endif
+
+                        <div class="col-lg-4 col-md-6">
+                            <div class="item pb_70" data-aos="zoom-out-up">
+                                <div class="photo">
+                                    <img src="{{ asset('uploads/' . $item->featured_photo) }}" alt="">
+                                </div>
+                                <div class="text">
+                                    <h2>
+                                        <a href="{{ route('event', $item->slug) }}">{{ $item->name }}</a>
+                                    </h2>
+                                    <div class="date-time">
+                                        <i class="fas fa-calendar-alt"></i>
+                                        @php
+                                            $date = \Carbon\Carbon::parse($item->date)->format('j M, Y');
+                                            $time = \Carbon\Carbon::parse($item->time)->format('h:i A');
+                                        @endphp
+                                        {{ $date }}, {{ $time }}
+                                    </div>
+                                    <div class="short-des">
+                                        <p>
+                                            {!! nl2br($item->short_description) !!}
+                                        </p>
+                                    </div>
+                                    <div class="button-style-2">
+                                        <a href="{{ route('event', $item->slug) }}">Read More <i
+                                                class="fas fa-long-arrow-alt-right"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    @endif
+
+
+    @if ($home_page_item->testimonial_status == 'Show')
+        <div class="testimonial pt_70 pb_70"
+            style="background-image: url({{ asset('uploads/' . $home_page_item->testimonial_background) }})">
+            <div class="bg"></div>
+            <div class="container">
+
+                @if ($home_page_item->testimonial_heading != '')
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h2 class="main-header">{{ $home_page_item->testimonial_heading }}</h2>
+                        </div>
+                    </div>
+                @endif
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="testimonial-carousel owl-carousel">
+                            @foreach ($testimonials as $testimonial)
+                                <div class="item">
+                                    <div class="photo">
+                                        <img src="{{ asset('uploads/' . $testimonial->photo) }}" alt="" />
+                                    </div>
+                                    <div class="text">
+                                        <h4>{{ $testimonial->name }}</h4>
+                                        <p>{{ $testimonial->designation }}</p>
+                                    </div>
+                                    <div class="description">
+                                        <p>
+                                            {!! $testimonial->comment !!}
+                                        </p>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
+
+    @if ($home_page_item->blog_status == 'Show')
+        <div class="blog pt_70">
+            <div class="container">
+
+                @if ($home_page_item->blog_heading != '' || $home_page_item->blog_subheading != '')
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="heading">
+                                <h2>{{ $home_page_item->blog_heading }}</h2>
+                                <p>
+                                    {{ $home_page_item->blog_subheading }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+                <div class="row">
+                    @foreach ($posts as $item)
+                        <div class="col-lg-4 col-md-6">
+                            <div class="item pb_70">
+                                <div class="photo" data-aos="fade-up" data-aos-anchor-placement="center-bottom">
+                                    <img src="{{ asset('uploads/' . $item->photo) }}" alt="" />
+                                </div>
+                                <div class="text">
+                                    <h2>
+                                        <a href="{{ route('post', $item->slug) }}">{{ $item->title }}</a>
+                                    </h2>
+                                    <div class="short-des">
+                                        <p>
+                                            {!! nl2br($item->short_description) !!}
+                                        </p>
+                                    </div>
+                                    <div class="button-style-2 mt_20">
+                                        <a href="{{ route('post', $item->slug) }}">Read More <i
+                                                class="fas fa-long-arrow-alt-right"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    @endif
+    <script>
+        AOS.init();
+        document.addEventListener('DOMContentLoaded', function() {
+            const likeButtons = document.querySelectorAll('.like-btn');
+            const bookmarkButtons = document.querySelectorAll('.bookmark-btn');
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+            likeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const causeId = this.getAttribute('data-id');
+                    const likeCount = this.querySelector('.like-count');
+                    const icon = this.querySelector('i');
+
+                    // Send AJAX request to toggle like
+                    fetch(`/causes/${causeId}/like`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': csrfToken
+                            },
+                            body: JSON.stringify({})
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.error) {
+                                alert(data.error); // Show error message if available
+                            } else {
+                                // Update like count and toggle the heart icon
+                                likeCount.textContent = data.likes;
+                                icon.classList.toggle('fas');
+                                icon.classList.toggle('far');
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                });
+            });
+
+            bookmarkButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const causeId = this.getAttribute('data-id');
+                    const icon = this.querySelector('i');
+
+                    // Send AJAX request to toggle bookmark
+                    fetch(`/causes/${causeId}/bookmark`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': csrfToken
+                            },
+                            body: JSON.stringify({})
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.error) {
+                                alert(data.error); // Show error message if available
+                            } else {
+                                // Toggle the bookmark icon
+                                icon.classList.toggle('fas');
+                                icon.classList.toggle('far');
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                });
+            });
+        });
+    </script>
+@endsection
